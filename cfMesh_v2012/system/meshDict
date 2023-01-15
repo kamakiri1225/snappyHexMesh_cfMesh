@@ -1,0 +1,145 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaceFile "model_m.stl";
+// minCellSize 0.001;
+maxCellSize 0.01;
+boundaryCellSize 0.01;
+localRefinement
+{
+    "sideWall3"
+    {
+        cellSize 0.004;
+    }
+    "wallOutlet1"
+    {
+        cellSize 0.004;
+    }
+    "outletYmax"
+    {
+        cellSize 0.004;
+    }
+    "outletYmin"
+    {
+        cellSize 0.004;
+    }
+    "sideWall2"
+    {
+        cellSize 0.001;
+    }
+    "wall1"
+    {
+        cellSize 0.004;
+    }
+    "sideWall1"
+    {
+        cellSize 0.004;
+    }
+    "inlet"
+    {
+        cellSize 0.004;
+    }
+    // "orifice0[3-6].*"
+    // {
+    //     cellSize 0.3;
+    // }
+}
+
+boundaryLayers
+{
+   nLayers 3;
+   thicknessRatio 1.0;
+//    maxFirstLayerThickness 0.001;
+
+    patchBoundaryLayers
+    {
+        "sideWall3"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "wallOutlet1"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "outletXmax"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "outletYmax"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "outletYmin"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "sideWall2"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "wall1"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "sideWall1"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        "inlet"
+        {
+            nLayers           3;
+            thicknessRatio    1.2;
+            maxFirstLayerThickness 0.001;
+            allowDiscontinuity 0;
+        }
+        // "orifice.*"
+        // {
+        //     nLayers           4;
+        //     thicknessRatio    1.2;
+        //     maxFirstLayerThickness 0.2;
+        //     allowDiscontinuity 0;
+        // }
+    }
+    optimiseLayer 1;
+}
+
+// ************************************************************************* //
