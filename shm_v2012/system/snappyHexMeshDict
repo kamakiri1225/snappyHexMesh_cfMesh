@@ -1,0 +1,288 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Which of the steps to run
+castellatedMesh true;
+snap            true;
+addLayers       true;
+
+geometry
+{
+    model_m.stl
+    {
+        type triSurfaceMesh;
+        name model_m;
+        regions
+        {
+            sideWall3             // Named region in the STL file
+            {
+                name sideWall3; // User-defined patch name
+            }                       // otherwise given sphere.stl_secondSolid
+            wallOutlet1
+            {
+                name wallOutlet1;
+            }
+            outletXmax
+            {
+                name outletXmax;
+            }
+            outletYmax
+            {
+                name outletYmax;
+            }
+            outletYmin
+            {
+                name outletYmin;
+            }
+            sideWall2
+            {
+                name sideWall2;
+            }
+            wall1
+            {
+                name wall1;
+            } 
+            sideWall1
+            {
+                name sideWall1;
+            }
+            inlet
+            {
+                name inlet;
+            } 
+        }
+    }
+
+    // refinementBox
+    // {
+    //     type box;
+    //     min  (-1.0 -0.7 0.0);
+    //     max  ( 8.0  0.7 2.5);
+    // }
+}
+
+// Settings for the castellatedMesh generation.
+castellatedMeshControls
+{
+    features
+    (
+        {
+            file "model_m.eMesh";
+            level 0;
+        }
+    );
+    refinementSurfaces
+    {
+        model_m
+        {
+            level (0 0);
+            regions
+            {
+                inlet
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type patch;
+                    //    inGroups (motorBikeGroup);
+                    }
+                }
+                wall1
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type wall;
+                    }
+                }
+                sideWall1
+                {
+                    level (1 1);
+                    patchInfo
+                    {
+                        type wall;
+                    }
+                } 
+                sideWall2
+                {
+                    level (1 1);
+                    patchInfo
+                    {
+                        type wall;
+                    }
+                }  
+                sideWall3
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type wall;
+                    }
+                }  
+                wallOutlet1
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type wall;
+                    }
+                }
+                outletXmax
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type patch;
+                    }
+                }
+                outletYmax
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type patch;
+                    }
+                }
+                outletYmin
+                {
+                    level (0 0);
+                    patchInfo
+                    {
+                        type patch;
+                    }
+                }
+            }
+        }
+    }
+
+    refinementRegions
+    {
+        // refinementBox
+        // {
+        //     mode inside;
+        //     levels ((1E15 4));
+        // }
+    }
+    maxLocalCells 100000000;
+    maxGlobalCells 100000000;
+    minRefinementCells 10;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 3;
+
+    resolveFeatureAngle 30;
+    locationInMesh (0.1 0 0);
+    allowFreeStandingZoneFaces true;
+}
+
+// Settings for the snapping.
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0;
+    nSolveIter 30;
+    nRelaxIter 5;
+    nFeatureSnapIter 10;
+    implicitFeatureSnap false;
+    explicitFeatureSnap true;
+    multiRegionFeatureSnap false;
+}
+
+// Settings for the layer addition.
+addLayersControls
+{
+    layers
+    {
+        //"(lowerWall|motorBike).*"
+        inlet
+        {
+            nSurfaceLayers 3;
+        }
+        sideWall1
+        {
+            nSurfaceLayers 3;
+        } 
+        sideWall2
+        {
+            nSurfaceLayers 3;
+        } 
+        wall1
+        {
+            nSurfaceLayers 3;
+        }
+        sideWall3
+        {
+            nSurfaceLayers 3;
+        }  
+        wallOutlet1
+        {
+            nSurfaceLayers 3;
+        }
+        outletXmax
+        {
+            nSurfaceLayers 3;
+        }
+        outletYmax
+        {
+            nSurfaceLayers 3;
+        }
+        outletYmin
+        {
+            nSurfaceLayers 3;
+        }
+    }
+    relativeSizes true;
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.03;
+    nGrow 0;
+    // featureAngle 60;
+    featureAngle 130;
+    slipFeatureAngle 30;
+    nRelaxIter 3;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+
+
+// Generic mesh quality settings. At any undoable phase these determine
+// where to undo.
+meshQualityControls
+{
+    #include "meshQualityDict"
+    //- Number of error distribution iterations
+    nSmoothScale 4;
+    //- Amount to scale back displacement at error points
+    errorReduction 0.75;
+}
+
+
+// Write flags
+writeFlags
+(
+    scalarLevels
+    layerSets
+    layerFields     // write volScalarField for layer coverage
+);
+
+mergeTolerance 1e-6;
+// ************************************************************************* //

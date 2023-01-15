@@ -1,0 +1,5 @@
+./Allcelan
+blockMesh
+snappyHexMesh
+touch post.foam
+
